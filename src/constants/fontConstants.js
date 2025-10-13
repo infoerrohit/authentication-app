@@ -14,10 +14,10 @@ export const FONT_CONSTANTS = {
 
   // Font Weights
   WEIGHT: {
-    NORMAL: "400",
+    NORMAL: "normal",
     MEDIUM: "500",
     SEMIBOLD: "600",
-    BOLD: "700",
+    BOLD: "bold",
   },
 
   // Line Heights
@@ -39,90 +39,90 @@ export const FONT_CONSTANTS = {
     // Headers
     H1: {
       fontSize: 32,
-      fontWeight: "700",
-      lineHeight: 1.2,
+      fontWeight: "bold",
+      lineHeight: 38,
     },
     H2: {
       fontSize: 28,
-      fontWeight: "700",
-      lineHeight: 1.2,
+      fontWeight: "bold",
+      lineHeight: 34,
     },
     H3: {
       fontSize: 24,
-      fontWeight: "600",
-      lineHeight: 1.3,
+      fontWeight: "bold",
+      lineHeight: 31,
     },
     H4: {
       fontSize: 20,
-      fontWeight: "600",
-      lineHeight: 1.3,
+      fontWeight: "bold",
+      lineHeight: 26,
     },
 
     // Body Text
     BODY_LARGE: {
       fontSize: 18,
-      fontWeight: "400",
-      lineHeight: 1.4,
+      fontWeight: "normal",
+      lineHeight: 25,
     },
     BODY: {
       fontSize: 16,
-      fontWeight: "400",
-      lineHeight: 1.4,
+      fontWeight: "normal",
+      lineHeight: 22,
     },
     BODY_SMALL: {
       fontSize: 14,
-      fontWeight: "400",
-      lineHeight: 1.4,
+      fontWeight: "normal",
+      lineHeight: 20,
     },
 
     // Labels
     LABEL: {
       fontSize: 16,
-      fontWeight: "600",
-      lineHeight: 1.3,
+      fontWeight: "bold",
+      lineHeight: 21,
     },
     LABEL_SMALL: {
       fontSize: 14,
-      fontWeight: "600",
-      lineHeight: 1.3,
+      fontWeight: "bold",
+      lineHeight: 18,
     },
 
     // Buttons
     BUTTON_LARGE: {
       fontSize: 18,
-      fontWeight: "600",
-      lineHeight: 1.2,
+      fontWeight: "bold",
+      lineHeight: 22,
     },
     BUTTON: {
       fontSize: 16,
-      fontWeight: "600",
-      lineHeight: 1.2,
+      fontWeight: "bold",
+      lineHeight: 19,
     },
     BUTTON_SMALL: {
       fontSize: 14,
-      fontWeight: "600",
-      lineHeight: 1.2,
+      fontWeight: "bold",
+      lineHeight: 17,
     },
 
     // Links
     LINK: {
       fontSize: 16,
-      fontWeight: "600",
-      lineHeight: 1.3,
+      fontWeight: "bold",
+      lineHeight: 21,
     },
 
     // Error Text
     ERROR: {
       fontSize: 14,
-      fontWeight: "400",
-      lineHeight: 1.3,
+      fontWeight: "normal",
+      lineHeight: 18,
     },
 
     // Caption
     CAPTION: {
       fontSize: 12,
-      fontWeight: "400",
-      lineHeight: 1.3,
+      fontWeight: "normal",
+      lineHeight: 16,
     },
   },
 };

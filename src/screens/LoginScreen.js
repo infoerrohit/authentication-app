@@ -14,45 +14,36 @@ import { COLOR_CONSTANTS } from "../constants/colorConstants";
 import { FONT_CONSTANTS } from "../constants/fontConstants";
 import { TEXT_CONSTANTS } from "../constants/textConstants";
 import { useAuth } from "../contexts/AuthContext";
+import { useFormValidation } from "../hooks/useFormValidation";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
   const { login } = useAuth();
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  // Form validation rules
+  const validationRules = {
+    email: {
+      required: true,
+      email: true,
+      requiredMessage: TEXT_CONSTANTS.ERRORS.EMAIL_REQUIRED,
+      emailMessage: TEXT_CONSTANTS.ERRORS.INVALID_EMAIL,
+    },
+    password: {
+      required: true,
+      requiredMessage: TEXT_CONSTANTS.ERRORS.PASSWORD_REQUIRED,
+    },
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!email.trim()) {
-      newErrors.email = TEXT_CONSTANTS.ERRORS.EMAIL_REQUIRED;
-    } else if (!validateEmail(email)) {
-      newErrors.email = TEXT_CONSTANTS.ERRORS.INVALID_EMAIL;
-    }
-
-    if (!password.trim()) {
-      newErrors.password = TEXT_CONSTANTS.ERRORS.PASSWORD_REQUIRED;
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const { values, errors, setValue, validateForm, handleBlur, isFormValid } =
+    useFormValidation({ email: "", password: "" }, validationRules);
 
   const handleLogin = async () => {
     if (!validateForm()) {
       return;
     }
 
-    const result = await login(email, password);
-    if (result.success) {
-      navigation.replace("Home");
-    } else {
+    const result = await login(values.email, values.password);
+    if (!result.success) {
       Alert.alert(TEXT_CONSTANTS.ERRORS.LOGIN_FAILED, result.error);
     }
   };
@@ -76,8 +67,10 @@ const LoginScreen = ({ navigation }) => {
             <TextInput
               style={[styles.input, errors.email && styles.inputError]}
               placeholder={TEXT_CONSTANTS.PLACEHOLDERS.ENTER_EMAIL}
-              value={email}
-              onChangeText={setEmail}
+              placeholderTextColor={COLOR_CONSTANTS.TEXT.SECONDARY}
+              value={values.email}
+              onChangeText={(text) => setValue("email", text)}
+              onBlur={() => handleBlur("email")}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
@@ -97,8 +90,10 @@ const LoginScreen = ({ navigation }) => {
                   errors.password && styles.inputError,
                 ]}
                 placeholder={TEXT_CONSTANTS.PLACEHOLDERS.ENTER_PASSWORD}
-                value={password}
-                onChangeText={setPassword}
+                placeholderTextColor={COLOR_CONSTANTS.TEXT.SECONDARY}
+                value={values.password}
+                onChangeText={(text) => setValue("password", text)}
+                onBlur={() => handleBlur("password")}
                 secureTextEntry={!showPassword}
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -191,6 +186,8 @@ const styles = StyleSheet.create({
     padding: 12,
     ...FONT_CONSTANTS.STYLES.BODY,
     backgroundColor: COLOR_CONSTANTS.INPUT.BACKGROUND,
+    color: COLOR_CONSTANTS.TEXT.PRIMARY,
+    placeholderTextColor: COLOR_CONSTANTS.TEXT.SECONDARY,
   },
   inputError: {
     borderColor: COLOR_CONSTANTS.BORDER.ERROR,

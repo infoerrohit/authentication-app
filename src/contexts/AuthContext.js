@@ -15,6 +15,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     checkAuthState();
@@ -24,7 +25,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const userData = await AsyncStorage.getItem("user");
       if (userData) {
-        setUser(JSON.parse(userData));
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser);
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Error checking auth state:", error);
@@ -45,6 +48,7 @@ export const AuthProvider = ({ children }) => {
           email: email,
         };
         setUser(userData);
+        setIsAuthenticated(true);
         await AsyncStorage.setItem("user", JSON.stringify(userData));
         return { success: true };
       } else {
@@ -74,6 +78,7 @@ export const AuthProvider = ({ children }) => {
         email: email,
       };
       setUser(userData);
+      setIsAuthenticated(true);
       await AsyncStorage.setItem("user", JSON.stringify(userData));
       return { success: true };
     } catch (error) {
@@ -85,6 +90,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       setUser(null);
+      setIsAuthenticated(false);
       await AsyncStorage.removeItem("user");
     } catch (error) {
       console.error("Logout error:", error);
@@ -97,6 +103,7 @@ export const AuthProvider = ({ children }) => {
     signup,
     logout,
     loading,
+    isAuthenticated,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

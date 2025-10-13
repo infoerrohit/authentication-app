@@ -14,52 +14,42 @@ import { COLOR_CONSTANTS } from "../constants/colorConstants";
 import { FONT_CONSTANTS } from "../constants/fontConstants";
 import { TEXT_CONSTANTS } from "../constants/textConstants";
 import { useAuth } from "../contexts/AuthContext";
+import { useFormValidation } from "../hooks/useFormValidation";
 
 const SignupScreen = ({ navigation }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
   const { signup } = useAuth();
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  // Form validation rules
+  const validationRules = {
+    name: {
+      required: true,
+      requiredMessage: TEXT_CONSTANTS.ERRORS.NAME_REQUIRED,
+    },
+    email: {
+      required: true,
+      email: true,
+      requiredMessage: TEXT_CONSTANTS.ERRORS.EMAIL_REQUIRED,
+      emailMessage: TEXT_CONSTANTS.ERRORS.INVALID_EMAIL,
+    },
+    password: {
+      required: true,
+      password: true,
+      requiredMessage: TEXT_CONSTANTS.ERRORS.PASSWORD_REQUIRED,
+      passwordMessage: TEXT_CONSTANTS.ERRORS.PASSWORD_TOO_SHORT,
+    },
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!name.trim()) {
-      newErrors.name = TEXT_CONSTANTS.ERRORS.NAME_REQUIRED;
-    }
-
-    if (!email.trim()) {
-      newErrors.email = TEXT_CONSTANTS.ERRORS.EMAIL_REQUIRED;
-    } else if (!validateEmail(email)) {
-      newErrors.email = TEXT_CONSTANTS.ERRORS.INVALID_EMAIL;
-    }
-
-    if (!password.trim()) {
-      newErrors.password = TEXT_CONSTANTS.ERRORS.PASSWORD_REQUIRED;
-    } else if (password.length < 6) {
-      newErrors.password = TEXT_CONSTANTS.ERRORS.PASSWORD_TOO_SHORT;
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const { values, errors, setValue, validateForm, handleBlur, isFormValid } =
+    useFormValidation({ name: "", email: "", password: "" }, validationRules);
 
   const handleSignup = async () => {
     if (!validateForm()) {
       return;
     }
 
-    const result = await signup(name, email, password);
-    if (result.success) {
-      navigation.replace("Home");
-    } else {
+    const result = await signup(values.name, values.email, values.password);
+    if (!result.success) {
       Alert.alert(TEXT_CONSTANTS.ERRORS.SIGNUP_FAILED, result.error);
     }
   };
@@ -83,8 +73,10 @@ const SignupScreen = ({ navigation }) => {
             <TextInput
               style={[styles.input, errors.name && styles.inputError]}
               placeholder={TEXT_CONSTANTS.PLACEHOLDERS.ENTER_NAME}
-              value={name}
-              onChangeText={setName}
+              placeholderTextColor={COLOR_CONSTANTS.TEXT.SECONDARY}
+              value={values.name}
+              onChangeText={(text) => setValue("name", text)}
+              onBlur={() => handleBlur("name")}
               autoCapitalize="words"
               autoCorrect={false}
             />
@@ -96,8 +88,10 @@ const SignupScreen = ({ navigation }) => {
             <TextInput
               style={[styles.input, errors.email && styles.inputError]}
               placeholder={TEXT_CONSTANTS.PLACEHOLDERS.ENTER_EMAIL}
-              value={email}
-              onChangeText={setEmail}
+              placeholderTextColor={COLOR_CONSTANTS.TEXT.SECONDARY}
+              value={values.email}
+              onChangeText={(text) => setValue("email", text)}
+              onBlur={() => handleBlur("email")}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
@@ -117,8 +111,10 @@ const SignupScreen = ({ navigation }) => {
                   errors.password && styles.inputError,
                 ]}
                 placeholder={TEXT_CONSTANTS.PLACEHOLDERS.ENTER_PASSWORD}
-                value={password}
-                onChangeText={setPassword}
+                placeholderTextColor={COLOR_CONSTANTS.TEXT.SECONDARY}
+                value={values.password}
+                onChangeText={(text) => setValue("password", text)}
+                onBlur={() => handleBlur("password")}
                 secureTextEntry={!showPassword}
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -211,6 +207,8 @@ const styles = StyleSheet.create({
     padding: 12,
     ...FONT_CONSTANTS.STYLES.BODY,
     backgroundColor: COLOR_CONSTANTS.INPUT.BACKGROUND,
+    color: COLOR_CONSTANTS.TEXT.PRIMARY,
+    placeholderTextColor: COLOR_CONSTANTS.TEXT.SECONDARY,
   },
   inputError: {
     borderColor: COLOR_CONSTANTS.BORDER.ERROR,

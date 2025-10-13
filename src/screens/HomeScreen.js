@@ -6,7 +6,7 @@ import { FONT_CONSTANTS } from "../constants/fontConstants";
 import { TEXT_CONSTANTS } from "../constants/textConstants";
 import { useAuth } from "../contexts/AuthContext";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
@@ -21,9 +21,8 @@ const HomeScreen = ({ navigation }) => {
         {
           text: TEXT_CONSTANTS.COMMON.LOGOUT,
           style: "destructive",
-          onPress: () => {
-            logout();
-            navigation.replace("Login");
+          onPress: async () => {
+            await logout();
           },
         },
       ]
