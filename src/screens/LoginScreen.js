@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -16,7 +16,7 @@ import { TEXT_CONSTANTS } from "../constants/textConstants";
 import { useAuth } from "../contexts/AuthContext";
 import { useFormValidation } from "../hooks/useFormValidation";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = React.memo(({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
 
@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
   const { values, errors, setValue, validateForm, handleBlur, isFormValid } =
     useFormValidation({ email: "", password: "" }, validationRules);
 
-  const handleLogin = async () => {
+  const handleLogin = useCallback(async () => {
     if (!validateForm()) {
       return;
     }
@@ -46,7 +46,7 @@ const LoginScreen = ({ navigation }) => {
     if (!result.success) {
       Alert.alert(TEXT_CONSTANTS.ERRORS.LOGIN_FAILED, result.error);
     }
-  };
+  }, [validateForm, login, values.email, values.password]);
 
   return (
     <KeyboardAvoidingView
@@ -134,7 +134,9 @@ const LoginScreen = ({ navigation }) => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+});
+
+LoginScreen.displayName = "LoginScreen";
 
 const styles = StyleSheet.create({
   container: {

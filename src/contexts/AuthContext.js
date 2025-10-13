@@ -1,5 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { TEXT_CONSTANTS } from "../constants/textConstants";
 
 const AuthContext = createContext();
@@ -19,9 +26,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAuthState();
-  }, []);
+  }, [checkAuthState]);
 
-  const checkAuthState = async () => {
+  const checkAuthState = useCallback(async () => {
     try {
       const userData = await AsyncStorage.getItem("user");
       if (userData) {
@@ -34,9 +41,9 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     try {
       if (
         email === TEXT_CONSTANTS.TEST.EMAIL &&
@@ -61,9 +68,9 @@ export const AuthProvider = ({ children }) => {
       console.error("Login error:", error);
       return { success: false, error: TEXT_CONSTANTS.ERRORS.LOGIN_ERROR };
     }
-  };
+  }, []);
 
-  const signup = async (name, email, password) => {
+  const signup = useCallback(async (name, email, password) => {
     try {
       if (password.length < 6) {
         return {
@@ -85,9 +92,9 @@ export const AuthProvider = ({ children }) => {
       console.error("Signup error:", error);
       return { success: false, error: TEXT_CONSTANTS.ERRORS.SIGNUP_ERROR };
     }
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       setUser(null);
       setIsAuthenticated(false);
@@ -95,16 +102,19 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Logout error:", error);
     }
-  };
+  }, []);
 
-  const value = {
-    user,
-    login,
-    signup,
-    logout,
-    loading,
-    isAuthenticated,
-  };
+  const value = useMemo(
+    () => ({
+      user,
+      login,
+      signup,
+      logout,
+      loading,
+      isAuthenticated,
+    }),
+    [user, login, signup, logout, loading, isAuthenticated]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

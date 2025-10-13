@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLOR_CONSTANTS } from "../constants/colorConstants";
@@ -6,10 +6,10 @@ import { FONT_CONSTANTS } from "../constants/fontConstants";
 import { TEXT_CONSTANTS } from "../constants/textConstants";
 import { useAuth } from "../contexts/AuthContext";
 
-const HomeScreen = () => {
+const HomeScreen = React.memo(() => {
   const { user, logout } = useAuth();
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     Alert.alert(
       TEXT_CONSTANTS.COMMON.LOGOUT,
       TEXT_CONSTANTS.MESSAGES.LOGOUT_CONFIRMATION,
@@ -27,7 +27,7 @@ const HomeScreen = () => {
         },
       ]
     );
-  };
+  }, [logout]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -68,7 +68,9 @@ const HomeScreen = () => {
       </View>
     </SafeAreaView>
   );
-};
+});
+
+HomeScreen.displayName = "HomeScreen";
 
 const styles = StyleSheet.create({
   container: {

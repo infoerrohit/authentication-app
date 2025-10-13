@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -16,7 +16,7 @@ import { TEXT_CONSTANTS } from "../constants/textConstants";
 import { useAuth } from "../contexts/AuthContext";
 import { useFormValidation } from "../hooks/useFormValidation";
 
-const SignupScreen = ({ navigation }) => {
+const SignupScreen = React.memo(({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { signup } = useAuth();
 
@@ -43,7 +43,7 @@ const SignupScreen = ({ navigation }) => {
   const { values, errors, setValue, validateForm, handleBlur, isFormValid } =
     useFormValidation({ name: "", email: "", password: "" }, validationRules);
 
-  const handleSignup = async () => {
+  const handleSignup = useCallback(async () => {
     if (!validateForm()) {
       return;
     }
@@ -52,7 +52,7 @@ const SignupScreen = ({ navigation }) => {
     if (!result.success) {
       Alert.alert(TEXT_CONSTANTS.ERRORS.SIGNUP_FAILED, result.error);
     }
-  };
+  }, [validateForm, signup, values.name, values.email, values.password]);
 
   return (
     <KeyboardAvoidingView
@@ -155,7 +155,9 @@ const SignupScreen = ({ navigation }) => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+});
+
+SignupScreen.displayName = "SignupScreen";
 
 const styles = StyleSheet.create({
   container: {
