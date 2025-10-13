@@ -45,20 +45,19 @@ npm install
 3. Start the development server:
 
 ```bash
-npm start
+npx expo start
 ```
 
 4. Run on iOS:
 
-```bash
-npm run ios
-```
+````bash
+select i from the listed options(You must have xCode installed)```
 
 5. Run on Android:
 
 ```bash
-npm run android
-```
+select a from the listed options(You must have xCode installed)
+````
 
 ## Project Structure
 
