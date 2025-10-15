@@ -162,6 +162,15 @@ To test the app:
 - `expo`: Development platform
 - `react-native`: React Native framework
 
+## App Screenshots
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-10-15 at 13 03 32" src="https://github.com/user-attachments/assets/c3f21696-d1f9-4c0c-b071-e7c78541ad4b" />
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-10-15 at 13 03 44" src="https://github.com/user-attachments/assets/d8c4b02f-67aa-40c2-a344-b9e78f1156c4" />
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-10-15 at 13 03 51" src="https://github.com/user-attachments/assets/2c68028a-c4fb-4a7e-ae2f-ce60538e8ddc" />
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-10-15 at 13 04 05" src="https://github.com/user-attachments/assets/d80bc993-6dea-4055-b811-c75369f6dd88" />
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-10-15 at 13 04 23" src="https://github.com/user-attachments/assets/2d8e1439-4f4e-40ff-b676-f290b92db47c" />
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-10-15 at 13 04 40" src="https://github.com/user-attachments/assets/316503a3-009a-4565-ba12-8d12df5f3d52" />
+
+
 ## Future Enhancements
 
 - Real API integration
@@ -171,3 +180,6 @@ To test the app:
 - User profile editing
 - Remember me functionality
 - Session timeout handling
+
+
+
